@@ -1,19 +1,31 @@
 const express = require('express')
 const app = express()
-const http = require('http')
+const server = require('http').createServer(app)
+const io = require('socket.io')(server)
 const cors = require('cors')
 const morgan = require('morgan')
+const sockets = require('./sockets')
 const bodyParser = require('body-parser')
-const router = require('./router')
-// const io = require('socket.io')(server)
+const mongoose = require('mongoose')
+
 const PORT = process.env.PORT || 3000
 
-app.use(morgan('combined'))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(morgan('combined'))
 app.use(cors())
 app.use(express.static(`${__dirname}/public`))
-router(app)
 
-const server = http.createServer(app)
+mongoose.connect('mongodb://localhost:27017/popit')
+
+const db = mongoose.connection
+db.on('error', () => {
+  console.error('FAILED to connect to mongo database')
+})
+db.once('open', () => {
+  console.log('Connected to mongo database')
+})
+
+sockets(io)
 
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`))

@@ -19,7 +19,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['react', 'latest'],
+              presets: ['react', 'latest', 'stage-2'],
               plugins: ['react-hot-loader/babel', 'transform-class-properties']
             }
           }

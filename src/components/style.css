@@ -1,0 +1,25 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mesh {
+  width: 600px;
+  height: 600px;
+}
+
+.popper {
+  margin: 2px !important;
+  float: left;
+}
