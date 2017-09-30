@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import io from 'socket.io-client'
 import { getPoppersArray } from '../selectors/poppersSelector'
-import { changePopperColor, popperClick } from '../actions/poppersActions'
+import { setInitData, changePopperColor, popperClick } from '../actions/poppersActions'
 import './style.css'
 
 const socket = io.connect('http://localhost:3000')
@@ -14,6 +14,12 @@ class Layout extends Component {
     super(props)
     console.dir(socket)
     //dispatch load initial data socket
+
+    socket.on('init-data', data => {
+      console.dir(data)
+      this.props.setInitData(data)
+    })
+
     socket.on('popper-clicked', res => {
       console.dir(res)
       this.props.changePopperColor(res.id, res.color)
@@ -25,7 +31,7 @@ class Layout extends Component {
   handlePopperClick = popper => {
     let { popperClick } = this.props
     console.log('POP!', popper)
-    popperClick(socket, popper.id)
+    popperClick(socket, popper._id)
   }
 
   render() {
@@ -36,7 +42,7 @@ class Layout extends Component {
         {poppers &&
           poppers.map(popper => (
             <FloatingActionButton
-              key={popper.id}
+              key={popper._id}
               backgroundColor={popper.color}
               className="popper"
               onTouchTap={() => this.handlePopperClick(popper)}
@@ -57,7 +63,8 @@ const mapDispatch = dispatch => {
   return bindActionCreators(
     {
       changePopperColor,
-      popperClick
+      popperClick,
+      setInitData
     },
     dispatch
   )

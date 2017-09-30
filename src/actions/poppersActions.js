@@ -1,5 +1,12 @@
 import * as types from '../constants/actionTypes'
 
+export const setInitData = data => {
+  return {
+    type: types.SET_INIT_DATA,
+    payload: { data }
+  }
+}
+
 export const popperClick = (socket, id) => {
   return dispatch => {
     console.log('DISPATCH!')

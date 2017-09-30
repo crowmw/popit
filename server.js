@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const sockets = require('./sockets')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const seedDatabase = require('./src/utils/seedDatabase')
 
 const PORT = process.env.PORT || 3000
 
@@ -16,7 +17,11 @@ app.use(morgan('combined'))
 app.use(cors())
 app.use(express.static(`${__dirname}/public`))
 
-mongoose.connect('mongodb://localhost:27017/popit')
+const options = {
+  useMongoClient: true
+}
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost:27017/popit', options)
 
 const db = mongoose.connection
 db.on('error', () => {
@@ -25,6 +30,8 @@ db.on('error', () => {
 db.once('open', () => {
   console.log('Connected to mongo database')
 })
+
+seedDatabase
 
 sockets(io)
 
