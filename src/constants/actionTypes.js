@@ -1,2 +1,3 @@
 export const CHANGE_POPPER_COLOR = 'CHANGE_POPPER_COLOR'
 export const SET_INIT_DATA = 'SET_INIT_DATA'
+export const UPDATE_USER = 'UPDATE_USER'

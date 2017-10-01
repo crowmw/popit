@@ -16,7 +16,7 @@ module.exports = io => {
       console.log(`Received message: ${JSON.stringify(msg)}`)
       Popper.findOneAndUpdate(
         { _id: msg.id },
-        { $set: { color: msg.color } },
+        { $set: { color: msg.color, user: msg.user } },
         { new: true },
         (err, popper) => {
           if (err) {

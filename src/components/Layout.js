@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import io from 'socket.io-client'
 import { getPoppersArray } from '../selectors/poppersSelector'
 import { setInitData, changePopperColor, popperClick } from '../actions/poppersActions'
+import UserForm from './UserForm'
 import './style.css'
 
 const socket = io.connect('http://localhost:3000')
@@ -29,25 +30,28 @@ class Layout extends Component {
   }
 
   handlePopperClick = popper => {
-    let { popperClick } = this.props
+    let { popperClick, user } = this.props
     console.log('POP!', popper)
-    popperClick(socket, popper._id)
+    popperClick(socket, popper._id, user)
   }
 
   render() {
-    let { poppers } = this.props
+    let { poppers, user } = this.props
 
     return (
-      <div className="mesh">
-        {poppers &&
-          poppers.map(popper => (
-            <FloatingActionButton
-              key={popper._id}
-              backgroundColor={popper.color}
-              className="popper"
-              onTouchTap={() => this.handlePopperClick(popper)}
-            />
-          ))}
+      <div className="layout">
+        <div className="mesh">
+          {poppers &&
+            poppers.map(popper => (
+              <FloatingActionButton
+                key={popper._id}
+                backgroundColor={popper.color}
+                className="popper"
+                onTouchTap={() => this.handlePopperClick(popper)}
+              />
+            ))}
+        </div>
+        {!user.name && <UserForm />}
       </div>
     )
   }
@@ -55,7 +59,8 @@ class Layout extends Component {
 
 const mapState = state => {
   return {
-    poppers: getPoppersArray(state)
+    poppers: getPoppersArray(state),
+    user: state.user
   }
 }
 

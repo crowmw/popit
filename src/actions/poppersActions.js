@@ -7,12 +7,13 @@ export const setInitData = data => {
   }
 }
 
-export const popperClick = (socket, id) => {
+export const popperClick = (socket, id, user) => {
   return dispatch => {
     console.log('DISPATCH!')
     let postData = {
       id,
-      color: '#ff0000'
+      color: user.color,
+      user: user.name
     }
     socket.emit('popper-click', postData)
   }
