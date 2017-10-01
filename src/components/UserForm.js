@@ -11,6 +11,7 @@ import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import Paper from 'material-ui/Paper'
+import { CirclePicker } from 'react-color'
 import './style.css'
 
 class UserForm extends Component {
@@ -19,7 +20,8 @@ class UserForm extends Component {
     this.state = {
       name: '',
       color: randomHexColor(),
-      opened: false
+      opened: false,
+      error: ''
     }
     this.handleOnNameChange = this.handleOnNameChange.bind(this)
   }
@@ -32,14 +34,18 @@ class UserForm extends Component {
 
   handleColorChange = color => {
     this.setState({
-      color,
+      color: color.hex,
       opened: false
     })
   }
 
   handleClick = () => {
     let { name, color } = this.state
-    this.props.updateUser(name, color)
+    if (name) {
+      this.props.updateUser(name, color)
+    } else {
+      this.setState({ error: 'Username required' })
+    }
   }
 
   handleOpen = e => {
@@ -54,7 +60,7 @@ class UserForm extends Component {
 
   render() {
     let { handleOnNameChange, updateUser } = this.props
-    let { name, color, opened, anchorEl } = this.state
+    let { name, color, opened, anchorEl, error } = this.state
 
     let colours = []
     for (let i = 0; i <= 5; i++) {
@@ -62,10 +68,17 @@ class UserForm extends Component {
     }
 
     return (
-      <div className="blured">
+      <div>
+        <div className="blur" />
         <Paper className="userForm">
           <div className="textField">
-            <TextField value={name} onChange={e => this.handleOnNameChange(e)} />
+            <TextField
+              id="userName"
+              placeholder="Username..."
+              value={name}
+              onChange={e => this.handleOnNameChange(e)}
+              errorText={error}
+            />
             <FloatingActionButton backgroundColor={color} onTouchTap={e => this.handleOpen(e)} />
             <Popover
               open={opened}
@@ -74,23 +87,15 @@ class UserForm extends Component {
               targetOrigin={{ horizontal: 'middle', vertical: 'center' }}
               onRequestClose={this.handleRequestClose}
             >
-              <Menu>
-                {colours.map((color, index) => (
-                  <MenuItem>
-                    <FloatingActionButton
-                      key={index}
-                      backgroundColor={color}
-                      onTouchTap={() => this.handleColorChange(color)}
-                    />
-                  </MenuItem>
-                ))}
-              </Menu>
+              <CirclePicker className="colorPicker" onChangeComplete={this.handleColorChange} />
             </Popover>
           </div>
           <RaisedButton
             primary={true}
             label="Start popping!"
+            fullWidth={true}
             onTouchTap={() => this.handleClick()}
+            style={{ marginTop: '16px' }}
           />
         </Paper>
       </div>

@@ -7,7 +7,7 @@ const morgan = require('morgan')
 const sockets = require('./sockets')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-const seedDatabase = require('./src/utils/seedDatabase')
+const seedDatabase = require('./seedDatabase')
 
 const PORT = process.env.PORT || 3000
 
@@ -31,7 +31,7 @@ db.once('open', () => {
   console.log('Connected to mongo database')
 })
 
-seedDatabase
+seedDatabase()
 
 sockets(io)
 

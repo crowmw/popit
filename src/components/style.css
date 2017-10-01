@@ -15,12 +15,14 @@ html {
 
 .layout {
   width: 100%;
-  height: 100%;
+  display: flex;
+  padding: 32px 0;
+  justify-content: center;
 }
 
 .mesh {
-  width: 600px;
-  height: 600px;
+  width: 1400px;
+  height: 725px;
 }
 
 .popper {
@@ -29,18 +31,29 @@ html {
 }
 
 .userForm {
-  position: absolute !important;
-  padding: 16px !important;
-  z-index: 1;
+  position: fixed !important;
+  padding: 32px !important;
+  z-index: 2;
+  top: 40%;
+  left: 40%;
 }
 
-.blured {
+.colorPicker {
+  margin: 22px 8px 8px 22px !important;
+}
+
+.blur {
+  opacity: 0.9;
   width: 100%;
   height: 100%;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1;
+  background-color: #ffffff;
 }
 
-.userForm .textField {}
+.textField {
+  display: flex;
+  align-items: baseline;
+}
